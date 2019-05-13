@@ -31,11 +31,14 @@ struct RootViewPresenter: OnboardingViewPresenter {
     
     func showOnboardingWizardView() {
         let onboardingWizardVC = OnboardingWizardViewController()
+        onboardingWizardVC.onCompleteOnboardingWizard = {
+            self.onDone()
+        }
         window?.rootViewController = onboardingWizardVC
     }
     
     func onDone() {
-
+        print("done")
     }
 }
 
@@ -44,9 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
         
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()

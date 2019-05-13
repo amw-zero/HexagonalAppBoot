@@ -11,7 +11,7 @@ import UIKit
 class TermsAndConditionsViewController: UIViewController {
     var onAcceptTermsAndConditions: () -> Void = { }
     override func viewDidLoad() {
-        view.backgroundColor = .red
+        view.backgroundColor = .white
         super.viewDidLoad()
         
         let button = UIButton(type: .system)
