@@ -12,7 +12,7 @@ import XCTest
 class TestOnboardingViewPresenter: OnboardingViewPresenter {
     var termsAndConditionsViewWasShown = false
     var proceededToOnboardingWizard = false
-    var onboardingWizardShell: OnboardingClientShell = OnboardingClientShell()
+    var onboardingWizardShell: OnboardingClientShell?
     var showedOnboardingWizard = false
     var showedAuthenticationScreen = false
     var onDoneCalled = false
@@ -39,68 +39,108 @@ class TestOnboardingViewPresenter: OnboardingViewPresenter {
 
 class OnboardingClientCoreTests: XCTestCase {
     func testTermsAndConditionsShowsWhenNotAccepted() {
-        let dataDependency: ((Bool) -> Void) -> Void = { fulfill in
-            fulfill(false)
+        let dataDependency: ((User) -> Void) -> Void = { fulfill in
+            let user = User(acceptedTermsAndConditions: false)
+            fulfill(user)
         }
         let viewPresenter = TestOnboardingViewPresenter()
-        let shell = OnboardingClientShell()
-        shell.requestTermsAndConditionsEligibility(
+        let shell = OnboardingClientShell(
             dataDependency: dataDependency,
-            viewPresenter: viewPresenter)
+            viewPresenter: viewPresenter
+        )
+        shell.requestTermsAndConditionsEligibility()
+        
         XCTAssertTrue(viewPresenter.termsAndConditionsViewWasShown)
         XCTAssertEqual(viewPresenter.onboardingWizardShell, shell)
     }
     func testTermsAndConditionsWhenAccepted() {
-        let dataDependency: ((Bool) -> Void) -> Void = { fulfill in
-            fulfill(true)
+        let dataDependency: ((User) -> Void) -> Void = { fulfill in
+            let user = User(acceptedTermsAndConditions: true)
+            fulfill(user)
         }
         let viewPresenter = TestOnboardingViewPresenter()
-        let shell = OnboardingClientShell()
-        shell.requestTermsAndConditionsEligibility(
+        let shell = OnboardingClientShell(
             dataDependency: dataDependency,
-            viewPresenter: viewPresenter)
+            viewPresenter: viewPresenter
+        )
+        
+        shell.requestTermsAndConditionsEligibility()
+
         XCTAssertTrue(viewPresenter.proceededToOnboardingWizard)
         XCTAssertEqual(viewPresenter.onboardingWizardShell, shell)
     }
     func testAcceptingTermsAndConditions() {
+        let dataDependency: ((User) -> Void) -> Void = { fulfill in
+            let user = User()
+            fulfill(user)
+        }
         let viewPresenter = TestOnboardingViewPresenter()
-        let shell = OnboardingClientShell()
+        let shell = OnboardingClientShell(
+            dataDependency: dataDependency,
+            viewPresenter: viewPresenter
+        )
         shell.acceptTermsAndConditions(viewPresenter: viewPresenter)
         
         XCTAssertTrue(viewPresenter.proceededToOnboardingWizard)
         XCTAssertEqual(viewPresenter.onboardingWizardShell, shell)
     }
     func testOnboardingWizardShownWhenHasNotBeenSeen() {
-        let dataDependency: ((Bool) -> Void) -> Void = { fulfill in
-            fulfill(false)
+        let dataDependency: ((User) -> Void) -> Void = { fulfill in
+            let user = User(onboardingWizardShown: false)
+            fulfill(user)
         }
         let viewPresenter = TestOnboardingViewPresenter()
-        let shell = OnboardingClientShell()
-        shell.requestOnboardingWizardEligibility(
+        let shell = OnboardingClientShell(
             dataDependency: dataDependency,
-            viewPresenter: viewPresenter)
+            viewPresenter: viewPresenter
+        )
+        shell.requestOnboardingWizardEligibility()
+        
         XCTAssertTrue(viewPresenter.showedOnboardingWizard)
     }
-    func testOnboardingWizardShownWhenHasBeenSeen() {
-        let dataDependency: ((Bool) -> Void) -> Void = { fulfill in
-            fulfill(true)
+    func testHomeScreenShownWhenHasBeenSeen() {
+        let dataDependency: ((User) -> Void) -> Void = { fulfill in
+            let user = User(onboardingWizardShown: true)
+            fulfill(user)
         }
         let viewPresenter = TestOnboardingViewPresenter()
-        let shell = OnboardingClientShell()
-        shell.requestOnboardingWizardEligibility(
+        let shell = OnboardingClientShell(
             dataDependency: dataDependency,
-            viewPresenter: viewPresenter)
+            viewPresenter: viewPresenter
+        )
+        shell.requestOnboardingWizardEligibility()
+        
         XCTAssertTrue(viewPresenter.onDoneCalled)
     }
     func testAuthenticationScreenShownWhenNotLoggedIn() {
-        let dataDependency: ((Bool) -> Void) -> Void = { fulfill in
-            fulfill(false)
+        let dataDependency: ((User) -> Void) -> Void = { fulfill in
+            let user = User(authenticated: false)
+            fulfill(user)
         }
         let viewPresenter = TestOnboardingViewPresenter()
-        let shell = OnboardingClientShell()
-        shell.requestAuthenticationStatus(
+        let shell = OnboardingClientShell(
             dataDependency: dataDependency,
-            viewPresenter: viewPresenter)
+            viewPresenter: viewPresenter
+        )
+        
+        shell.requestAuthenticationStatus()
+        
+        XCTAssertTrue(viewPresenter.showedAuthenticationScreen)
+        XCTAssertEqual(shell, viewPresenter.onboardingWizardShell)
+    }
+    func testStartingAtTermsAndConditionsWhenUserIsLoggedIn() {
+        let dataDependency: ((User) -> Void) -> Void = { fulfill in
+            let user = User(authenticated: true)
+            fulfill(user)
+        }
+        let viewPresenter = TestOnboardingViewPresenter()
+        let shell = OnboardingClientShell(
+            dataDependency: dataDependency,
+            viewPresenter: viewPresenter
+        )
+        
+        shell.requestAuthenticationStatus()
+        
         XCTAssertTrue(viewPresenter.showedAuthenticationScreen)
         XCTAssertEqual(shell, viewPresenter.onboardingWizardShell)
     }

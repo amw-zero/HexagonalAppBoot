@@ -17,17 +17,46 @@ public protocol OnboardingViewPresenter {
 
 public typealias BoolFunc = (Bool) -> Void
 
+public struct User {
+    let authenticated: Bool
+    let acceptedTermsAndConditions: Bool
+    let onboardingWizardShown: Bool
+    
+    public init(authenticated: Bool = false, acceptedTermsAndConditions: Bool = false, onboardingWizardShown: Bool = false) {
+        self.authenticated = authenticated
+        self.acceptedTermsAndConditions = acceptedTermsAndConditions
+        self.onboardingWizardShown = onboardingWizardShown
+    }
+    
+    static public func make() -> User {
+        return .init(
+            authenticated: false,
+            acceptedTermsAndConditions: false,
+            onboardingWizardShown: false
+        )
+    }
+}
+
 public class OnboardingClientShell: Equatable {
     public static func == (lhs: OnboardingClientShell, rhs: OnboardingClientShell) -> Bool {
         return lhs === rhs
     }
     
-    public init() {
+    let dataDependency: ((User) -> Void) -> Void
+    let viewPresenter: OnboardingViewPresenter
+    var user: User? = nil
+    
+    public init(
+        dataDependency: @escaping ((User) -> Void) -> Void = { fulfill in fulfill(User.make()) },
+        viewPresenter: OnboardingViewPresenter
+    ) {
+        self.dataDependency = dataDependency
+        self.viewPresenter = viewPresenter
     }
     
-    public func requestTermsAndConditionsEligibility(dataDependency: (BoolFunc) -> Void, viewPresenter: OnboardingViewPresenter) -> Void{
-        dataDependency { termsAccepted in
-            if termsAccepted {
+    public func requestTermsAndConditionsEligibility() -> Void{
+        executeAfterDependency {
+            if let accepted = user?.acceptedTermsAndConditions, accepted {
                 viewPresenter.proceedToOnboardingWizard(inShell: self)
             } else {
                 viewPresenter.showTermsAndConditionsView(inShell: self)
@@ -38,18 +67,30 @@ public class OnboardingClientShell: Equatable {
         viewPresenter.proceedToOnboardingWizard(inShell: self)
         
     }
-    public func requestOnboardingWizardEligibility(dataDependency: (BoolFunc) -> Void, viewPresenter: OnboardingViewPresenter) -> Void {
-        dataDependency { onboardingWizardShown in
-            if onboardingWizardShown {
+    public func requestOnboardingWizardEligibility() -> Void {
+        executeAfterDependency {
+            if let wizardShown = user?.onboardingWizardShown, wizardShown {
                 viewPresenter.onDone()
             } else {
                 viewPresenter.showOnboardingWizardView()
             }
         }
     }
-    public func requestAuthenticationStatus(dataDependency: (BoolFunc) -> Void, viewPresenter: OnboardingViewPresenter) -> Void {
-        dataDependency { userAuthenticated in
+    public func requestAuthenticationStatus() -> Void {
+        executeAfterDependency {
             viewPresenter.showAuthenticationScreen(inShell: self)
+        }
+    }
+    
+    private func executeAfterDependency(callback: () -> Void) {
+        if let _ = user {
+            callback()
+        } else {
+            dataDependency { [weak self] user in
+                guard let self = self else { return }
+                self.user = user
+                callback()
+            }
         }
     }
 }

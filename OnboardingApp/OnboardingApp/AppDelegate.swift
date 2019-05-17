@@ -11,7 +11,7 @@ import OnboardingClientCore
 
 let termsAndConditionsAccepted = false
 let onboardingWizardSeen = false
-let userAuthenticated = false
+let userAuthenticated = true
 
 struct RootViewPresenter: OnboardingViewPresenter {
     let window: UIWindow?
@@ -25,12 +25,7 @@ struct RootViewPresenter: OnboardingViewPresenter {
     }
     
     func proceedToOnboardingWizard(inShell shell: OnboardingClientShell) {
-        let onboardingWizardDataDependency: ((Bool) -> Void) -> Void = { fulfill in
-            fulfill(onboardingWizardSeen)
-        }
-        shell.requestOnboardingWizardEligibility(
-            dataDependency: onboardingWizardDataDependency,
-            viewPresenter: self)
+        shell.requestOnboardingWizardEligibility()
     }
     
     func showOnboardingWizardView() {
@@ -44,12 +39,7 @@ struct RootViewPresenter: OnboardingViewPresenter {
     func showAuthenticationScreen(inShell shell: OnboardingClientShell) {
         let authenticationVC = AuthenticationViewController()
         authenticationVC.onAuthenticated = {
-            let termsAndConditionsDataDependency: ((Bool) -> Void) -> Void = { fulfill in
-                fulfill(termsAndConditionsAccepted)
-            }
-            shell.requestTermsAndConditionsEligibility(
-                dataDependency: termsAndConditionsDataDependency,
-                viewPresenter: self)
+            shell.requestTermsAndConditionsEligibility()
         }
         window?.rootViewController = authenticationVC
     }
@@ -69,15 +59,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
         
-        let shell = OnboardingClientShell()
-        let rootViewPresenter = RootViewPresenter(window: window)
-        
-        let authenticationDataDependency: ((Bool) -> Void) -> Void = { fulfill in
-            fulfill(userAuthenticated)
+        let dataDependency: ((User) -> Void) -> Void = { fulfill in
+            let user = User(
+                authenticated: userAuthenticated,
+                acceptedTermsAndConditions: termsAndConditionsAccepted,
+                onboardingWizardShown: onboardingWizardSeen
+            )
+            fulfill(user)
         }
-        shell.requestAuthenticationStatus(
-            dataDependency: authenticationDataDependency,
-            viewPresenter: rootViewPresenter)
+        let rootViewPresenter = RootViewPresenter(window: window)
+        let shell = OnboardingClientShell(
+            dataDependency: dataDependency,
+            viewPresenter: rootViewPresenter
+        )
+        shell.requestAuthenticationStatus()
 
         return true
     }
