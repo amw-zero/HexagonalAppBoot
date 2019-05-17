@@ -17,6 +17,7 @@
 		A50583B22288D336008C62A9 /* OnboardingWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50583B12288D336008C62A9 /* OnboardingWizardViewController.swift */; };
 		A5DFFDE6228F62B6006561B4 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5DFFDE5228F62B6006561B4 /* HomeViewController.swift */; };
 		A5DFFDE8228F62F2006561B4 /* AutoLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5DFFDE7228F62F2006561B4 /* AutoLayout.swift */; };
+		A5DFFDEA228F65C0006561B4 /* AuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5DFFDE9228F65C0006561B4 /* AuthenticationViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +54,7 @@
 		A50583B12288D336008C62A9 /* OnboardingWizardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingWizardViewController.swift; sourceTree = "<group>"; };
 		A5DFFDE5228F62B6006561B4 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		A5DFFDE7228F62F2006561B4 /* AutoLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoLayout.swift; sourceTree = "<group>"; };
+		A5DFFDE9228F65C0006561B4 /* AuthenticationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +115,7 @@
 				A505838022886AC4008C62A9 /* LaunchScreen.storyboard */,
 				A5DFFDE5228F62B6006561B4 /* HomeViewController.swift */,
 				A5DFFDE7228F62F2006561B4 /* AutoLayout.swift */,
+				A5DFFDE9228F65C0006561B4 /* AuthenticationViewController.swift */,
 			);
 			path = OnboardingApp;
 			sourceTree = "<group>";
@@ -277,6 +280,7 @@
 				A505837A22886AC4008C62A9 /* TermsAndConditionsViewController.swift in Sources */,
 				A505837822886AC4008C62A9 /* AppDelegate.swift in Sources */,
 				A5DFFDE8228F62F2006561B4 /* AutoLayout.swift in Sources */,
+				A5DFFDEA228F65C0006561B4 /* AuthenticationViewController.swift in Sources */,
 				A5DFFDE6228F62B6006561B4 /* HomeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -41,6 +41,19 @@ struct RootViewPresenter: OnboardingViewPresenter {
         window?.rootViewController = onboardingWizardVC
     }
     
+    func showAuthenticationScreen(inShell shell: OnboardingClientShell) {
+        let authenticationVC = AuthenticationViewController()
+        authenticationVC.onAuthenticated = {
+            let termsAndConditionsDataDependency: ((Bool) -> Void) -> Void = { fulfill in
+                fulfill(termsAndConditionsAccepted)
+            }
+            shell.requestTermsAndConditionsEligibility(
+                dataDependency: termsAndConditionsDataDependency,
+                viewPresenter: self)
+        }
+        window?.rootViewController = authenticationVC
+    }
+    
     func onDone() {
         window?.rootViewController = HomeViewController()
     }
@@ -59,12 +72,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let shell = OnboardingClientShell()
         let rootViewPresenter = RootViewPresenter(window: window)
         
-        let termsAndConditionsDataDependency: ((Bool) -> Void) -> Void = { fulfill in
-            fulfill(termsAndConditionsAccepted)
+        let authenticationDataDependency: ((Bool) -> Void) -> Void = { fulfill in
+            fulfill(userAuthenticated)
         }
-        shell.requestTermsAndConditionsEligibility(
-            dataDependency: termsAndConditionsDataDependency,
+        shell.requestAuthenticationStatus(
+            dataDependency: authenticationDataDependency,
             viewPresenter: rootViewPresenter)
+
         return true
     }
 }

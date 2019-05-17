@@ -14,6 +14,7 @@ class TestOnboardingViewPresenter: OnboardingViewPresenter {
     var proceededToOnboardingWizard = false
     var onboardingWizardShell: OnboardingClientShell = OnboardingClientShell()
     var showedOnboardingWizard = false
+    var showedAuthenticationScreen = false
     var onDoneCalled = false
     
     func showTermsAndConditionsView(inShell shell: OnboardingClientShell) {
@@ -26,6 +27,10 @@ class TestOnboardingViewPresenter: OnboardingViewPresenter {
     }
     func showOnboardingWizardView() {
         showedOnboardingWizard = true
+    }
+    func showAuthenticationScreen(inShell shell: OnboardingClientShell) {
+        showedAuthenticationScreen = true
+        onboardingWizardShell = shell
     }
     func onDone() {
         onDoneCalled = true
@@ -86,5 +91,17 @@ class OnboardingClientCoreTests: XCTestCase {
             dataDependency: dataDependency,
             viewPresenter: viewPresenter)
         XCTAssertTrue(viewPresenter.onDoneCalled)
+    }
+    func testAuthenticationScreenShownWhenNotLoggedIn() {
+        let dataDependency: ((Bool) -> Void) -> Void = { fulfill in
+            fulfill(false)
+        }
+        let viewPresenter = TestOnboardingViewPresenter()
+        let shell = OnboardingClientShell()
+        shell.requestAuthenticationStatus(
+            dataDependency: dataDependency,
+            viewPresenter: viewPresenter)
+        XCTAssertTrue(viewPresenter.showedAuthenticationScreen)
+        XCTAssertEqual(shell, viewPresenter.onboardingWizardShell)
     }
 }

@@ -11,6 +11,7 @@ public protocol OnboardingViewPresenter {
     func showTermsAndConditionsView(inShell: OnboardingClientShell)
     func proceedToOnboardingWizard(inShell: OnboardingClientShell)
     func showOnboardingWizardView()
+    func showAuthenticationScreen(inShell: OnboardingClientShell)
     func onDone()
 }
 
@@ -44,6 +45,11 @@ public class OnboardingClientShell: Equatable {
             } else {
                 viewPresenter.showOnboardingWizardView()
             }
+        }
+    }
+    public func requestAuthenticationStatus(dataDependency: (BoolFunc) -> Void, viewPresenter: OnboardingViewPresenter) -> Void {
+        dataDependency { userAuthenticated in
+            viewPresenter.showAuthenticationScreen(inShell: self)
         }
     }
 }
