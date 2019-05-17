@@ -11,7 +11,7 @@ import OnboardingClientCore
 
 let termsAndConditionsAccepted = false
 let onboardingWizardSeen = false
-let userAuthenticated = true
+let userAuthenticated = false
 
 struct RootViewPresenter: OnboardingViewPresenter {
     let window: UIWindow?
@@ -72,7 +72,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             dataDependency: dataDependency,
             viewPresenter: rootViewPresenter
         )
-        shell.requestAuthenticationStatus()
+        shell.requestAuthenticationStatus(inShell: shell)
 
         return true
     }

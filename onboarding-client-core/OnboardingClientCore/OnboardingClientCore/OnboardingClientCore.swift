@@ -76,9 +76,13 @@ public class OnboardingClientShell: Equatable {
             }
         }
     }
-    public func requestAuthenticationStatus() -> Void {
+    public func requestAuthenticationStatus(inShell shell: OnboardingClientShell) -> Void {
         executeAfterDependency {
-            viewPresenter.showAuthenticationScreen(inShell: self)
+            if let userAuthenticated = user?.authenticated, userAuthenticated {
+                shell.requestTermsAndConditionsEligibility()
+            } else {
+                viewPresenter.showAuthenticationScreen(inShell: self)
+            }
         }
     }
     

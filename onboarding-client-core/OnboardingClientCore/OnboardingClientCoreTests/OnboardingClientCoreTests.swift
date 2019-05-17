@@ -123,7 +123,7 @@ class OnboardingClientCoreTests: XCTestCase {
             viewPresenter: viewPresenter
         )
         
-        shell.requestAuthenticationStatus()
+        shell.requestAuthenticationStatus(inShell: shell)
         
         XCTAssertTrue(viewPresenter.showedAuthenticationScreen)
         XCTAssertEqual(shell, viewPresenter.onboardingWizardShell)
@@ -139,9 +139,9 @@ class OnboardingClientCoreTests: XCTestCase {
             viewPresenter: viewPresenter
         )
         
-        shell.requestAuthenticationStatus()
+        shell.requestAuthenticationStatus(inShell: shell)
         
-        XCTAssertTrue(viewPresenter.showedAuthenticationScreen)
+        XCTAssertTrue(viewPresenter.termsAndConditionsViewWasShown)
         XCTAssertEqual(shell, viewPresenter.onboardingWizardShell)
     }
 }
