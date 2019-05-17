@@ -15,6 +15,8 @@
 		A505839822886AC5008C62A9 /* OnboardingAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A505839722886AC5008C62A9 /* OnboardingAppUITests.swift */; };
 		A50583B02288D11A008C62A9 /* OnboardingClientCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A50583AF2288D11A008C62A9 /* OnboardingClientCore.framework */; };
 		A50583B22288D336008C62A9 /* OnboardingWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50583B12288D336008C62A9 /* OnboardingWizardViewController.swift */; };
+		A5DFFDE6228F62B6006561B4 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5DFFDE5228F62B6006561B4 /* HomeViewController.swift */; };
+		A5DFFDE8228F62F2006561B4 /* AutoLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5DFFDE7228F62F2006561B4 /* AutoLayout.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +51,8 @@
 		A505839922886AC5008C62A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A50583AF2288D11A008C62A9 /* OnboardingClientCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = OnboardingClientCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A50583B12288D336008C62A9 /* OnboardingWizardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingWizardViewController.swift; sourceTree = "<group>"; };
+		A5DFFDE5228F62B6006561B4 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		A5DFFDE7228F62F2006561B4 /* AutoLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoLayout.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +111,8 @@
 				A505837922886AC4008C62A9 /* TermsAndConditionsViewController.swift */,
 				A505837E22886AC4008C62A9 /* Assets.xcassets */,
 				A505838022886AC4008C62A9 /* LaunchScreen.storyboard */,
+				A5DFFDE5228F62B6006561B4 /* HomeViewController.swift */,
+				A5DFFDE7228F62F2006561B4 /* AutoLayout.swift */,
 			);
 			path = OnboardingApp;
 			sourceTree = "<group>";
@@ -270,6 +276,8 @@
 				A50583B22288D336008C62A9 /* OnboardingWizardViewController.swift in Sources */,
 				A505837A22886AC4008C62A9 /* TermsAndConditionsViewController.swift in Sources */,
 				A505837822886AC4008C62A9 /* AppDelegate.swift in Sources */,
+				A5DFFDE8228F62F2006561B4 /* AutoLayout.swift in Sources */,
+				A5DFFDE6228F62B6006561B4 /* HomeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

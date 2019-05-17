@@ -9,6 +9,10 @@
 import UIKit
 import OnboardingClientCore
 
+let termsAndConditionsAccepted = false
+let onboardingWizardSeen = false
+let userAuthenticated = false
+
 struct RootViewPresenter: OnboardingViewPresenter {
     let window: UIWindow?
     
@@ -22,7 +26,7 @@ struct RootViewPresenter: OnboardingViewPresenter {
     
     func proceedToOnboardingWizard(inShell shell: OnboardingClientShell) {
         let onboardingWizardDataDependency: ((Bool) -> Void) -> Void = { fulfill in
-            fulfill(false)
+            fulfill(onboardingWizardSeen)
         }
         shell.requestOnboardingWizardEligibility(
             dataDependency: onboardingWizardDataDependency,
@@ -38,7 +42,7 @@ struct RootViewPresenter: OnboardingViewPresenter {
     }
     
     func onDone() {
-        print("done")
+        window?.rootViewController = HomeViewController()
     }
 }
 
@@ -56,7 +60,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let rootViewPresenter = RootViewPresenter(window: window)
         
         let termsAndConditionsDataDependency: ((Bool) -> Void) -> Void = { fulfill in
-            fulfill(false)
+            fulfill(termsAndConditionsAccepted)
         }
         shell.requestTermsAndConditionsEligibility(
             dataDependency: termsAndConditionsDataDependency,
